@@ -1,0 +1,30 @@
+{
+    "name": "LabDNS",
+    "version": "0.0.0",
+    "description": "Simple DNS Server for a lab setting",
+    "homepage": "https://github.com/aksalj/labdns",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/aksalj/labdns"
+    },
+
+    "bugs": {
+        "url": "https://github.com/aksalj/labdns/issues",
+        "email": "devaksal@gmail.com"
+    },
+
+    "keywords": ["dns", "lab", "lan", "local dns", "local", "lan dns"],
+
+    "author": "Salama AB <aksalj@aksalj.me>",
+
+    "license": "MIT",
+    "scripts": {
+        "start": "node ./bin/start",
+        "labDNS": "node ./bin/start"
+    },
+    "dependencies": {
+        "config" : "1.4.0",
+        "native-dns": "0.7.0",
+        "debug": "~2.0.0"
+    }
+}

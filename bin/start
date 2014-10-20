@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+var LabDNS = require('../src/labdns');
+
+// TODO: Read configs from command line
+
+var labDNS = new LabDNS();
+labDNS.start();

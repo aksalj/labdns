@@ -1,0 +1,41 @@
+#!/usr/bin/env node
+var dns = require('native-dns');
+var conf = require('config');
+var LabDNS = require('../src/labdns');
+
+
+var labDNS = new LabDNS();
+labDNS.start();
+
+
+
+var question = dns.Question({
+    name: 'www.website.lab',
+    type: 'A'
+});
+
+var start = Date.now();
+
+var req = dns.Request({
+    question: question,
+    server: { address: conf.ip, port: conf.port, type: 'udp' },
+    timeout: 10000
+});
+
+req.on('timeout', function () {
+    console.log('Timeout in making request');
+});
+
+req.on('message', function (err, result) {
+    //console.log(result);
+    result.answer.forEach(function (ans) {
+        console.log(ans.name + " -> " + ans.address);
+    });
+});
+
+req.on('end', function () {
+    var delta = (Date.now()) - start;
+    console.log('Finished processing request: ' + delta.toString() + 'ms');
+});
+
+req.send();

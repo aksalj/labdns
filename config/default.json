@@ -1,0 +1,45 @@
+{
+    "debug": true,
+    "ip": "0.0.0.0",
+    "port": "5300",
+    "ipv6Support": true,
+
+    "forward": "8.8.8.8",
+
+    "records" : {
+        "router.lab": {
+            "A": "192.168.0.1",
+            "TTL": 3600
+        },
+
+        "winserv.lab" : {
+            "A": "192.168.0.2",
+            "TTL": 3600
+        },
+
+        "macmini.lab": {
+            "A": "192.168.0.3",
+            "TTL": 3600
+        },
+
+        "linserv.lab": {
+            "A": "192.168.0.4",
+            "TTL": 3600
+        },
+
+        "www.*.lab" : {
+            "CNAME": "winserv.lab",
+            "TTL": 1200
+        },
+
+        "api.*.lab" : {
+            "CNAME": "macmini.lab",
+            "TTL": 1200
+        },
+
+        "*.lab" : {
+            "CNAME": "linserv.lab",
+            "TTL": 1200
+        }
+    }
+}
