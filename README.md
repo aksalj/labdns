@@ -5,6 +5,8 @@
 
 Simple DNS Server for the LAN in your lab, inspired by [xip.io](http://xip.io/).
 
+#####Note: This tool was written for demonstration purposes.
+
 ### Usage `TODO`
 `labDNS -c conf.json`
 

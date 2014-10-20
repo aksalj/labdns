@@ -1,7 +1,7 @@
 {
     "name": "labdns",
-    "version": "0.0.0",
-    "description": "Simple DNS Server for a lab setting",
+    "version": "0.0.1",
+    "description": "Simple DNS Server for your lab",
     "homepage": "https://github.com/aksalj/labdns",
     "repository": {
         "type": "git",
@@ -13,7 +13,7 @@
         "email": "devaksal@gmail.com"
     },
 
-    "keywords": ["dns", "lab", "lan", "local dns", "local", "lan dns"],
+    "keywords": ["dns", "lab", "lan", "local dns", "local", "lan dns", "dns server"],
 
     "author": "Salama AB <aksalj@aksalj.me>",
 
