@@ -1,5 +1,5 @@
 {
-    "name": "LabDNS",
+    "name": "labdns",
     "version": "0.0.0",
     "description": "Simple DNS Server for a lab setting",
     "homepage": "https://github.com/aksalj/labdns",
