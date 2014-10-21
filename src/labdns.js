@@ -18,26 +18,27 @@ var dns = require('native-dns');
 var TYPES = dns.consts.NAME_TO_QTYPE;
 var RETURN_CODES = dns.consts.NAME_TO_RCODE;
 
+
 /**
  *
  * @param record
- * @returns {*}
+ * @returns {Array}
  */
-var followCNAME = function (record) {
+var getRecordTree = function (record) {
+    var result = [];
     if(record.hasOwnProperty("CNAME")) {
         if(conf.records.hasOwnProperty(record.CNAME)){
             var rec = conf.records[record.CNAME];
-            if(rec.hasOwnProperty("A") || rec.hasOwnProperty("AAAA")) {
-                return rec;
-            } else if (rec.hasOwnProperty("CNAME")) {
-                return followCNAME(rec);
+            result.push({name: record.CNAME, record:rec });
+            if (rec.hasOwnProperty("CNAME")) {
+                getRecordTree(rec).forEach(function (rc) {
+                    result.push(rc);
+                });
             }
-        } else {
-            return null;
         }
-    } else {
-        return null;
     }
+
+    return result;
 };
 
 /**
@@ -87,7 +88,6 @@ module.exports = function () {
         server.on('request', function(req, res) {
 
             var _not_found_ = true;
-            var _forwarded_ = false;
 
             req.question.forEach(function(question) {
 
@@ -98,19 +98,41 @@ module.exports = function () {
 
                     switch (question.type) {
                         case TYPES.A:
+                            var tree = [];
                             if(utils.isCNAMERecord(record)) {
-                                record = followCNAME(record);
+                                tree = getRecordTree(record);
                             }
 
-                            if(record != null && utils.isARecord(record)) {
+                            if(tree.length > 0) { // was CNAME
+                                res.answer.push(dns.CNAME({
+                                    name: question.name,
+                                    data: record.CNAME,
+                                    ttl: record.TTL
+                                }));
+
+                                tree.forEach(function(rec) {
+                                    if(utils.isARecord(rec.record)) {
+                                        res.answer.push(dns.A({
+                                            name: rec.name,
+                                            address: rec.record.A,
+                                            ttl: rec.record.TTL
+                                        }));
+                                    } else if (utils.isCNAMERecord(rec.record)) {
+                                        res.answer.push(dns.CNAME({
+                                            name: rec.name,
+                                            data: rec.record.CNAME,
+                                            ttl: rec.record.TTL
+                                        }));
+                                    }
+                                });
+                            } else {
                                 res.answer.push(dns.A({
                                     name: question.name,
                                     address: record.A,
                                     ttl: record.TTL
                                 }));
-                            } else {
-                                res.header.rcode = RETURN_CODES.YXDOMAIN;
                             }
+
 
                             break;
                         case TYPES.CNAME:
@@ -126,14 +148,6 @@ module.exports = function () {
                             break
                     }
 
-                } else {
-                    if(conf.forward) {
-                        utils.forwardRequest(question, function(err, result) {
-                            res.answer = result.answer;
-                            res.send();
-                        });
-                        _forwarded_ = true;
-                    }
                 }
             });
 
@@ -141,9 +155,7 @@ module.exports = function () {
                 res.header.rcode = RETURN_CODES.NOTFOUND;
             }
 
-            if(!_forwarded_) {
-                res.send();
-            }
+            res.send();
         });
 
         server.on('error', function(error) {

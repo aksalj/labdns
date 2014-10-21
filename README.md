@@ -3,7 +3,7 @@
 [![NPM](https://nodei.co/npm/labdns.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.org/package/labdns)
 
 
-Simple DNS Server for the LAN in your lab, inspired by [xip.io](http://xip.io/).
+Simple DNS Server for the LAN in your lab.
 
 #####Note: This tool was written for demonstration purposes.
 
@@ -33,10 +33,3 @@ Simple DNS Server for the LAN in your lab, inspired by [xip.io](http://xip.io/).
     }
 }
 ```
-
-
-### Contributing
-
-1. Fork this repo and make changes in your own fork.
-2. Commit your changes and push to your fork `git push origin master`
-3. Create a new pull request and submit it back to the project.

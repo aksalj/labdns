@@ -10,8 +10,6 @@
  *  Description :
  *
  */
-var dns = require('native-dns');
-var conf = require('config');
 
 exports.isARecord = function (record) {
     return record.hasOwnProperty("A");
@@ -27,23 +25,4 @@ exports.isCNAMERecord = function (record) {
 
 exports.isMXRecord = function (record) {
     return record.hasOwnProperty("MX");
-};
-
-exports.forwardRequest = function (question, callback) {;
-    var req = dns.Request({
-        question: question,
-        server: { address: conf.forward },
-        timeout: 1000
-    });
-
-    req.on('timeout', function () {
-        console.log('Timeout in making request');
-    });
-
-
-    req.on('message', function (err, result) {
-        callback(err, result);
-    });
-
-    req.send();
 };
