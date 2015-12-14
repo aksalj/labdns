@@ -1,6 +1,6 @@
 {
     "name": "labdns",
-    "version": "0.0.1",
+    "version": "0.0.11",
     "description": "Simple DNS Server for your lab",
     "homepage": "https://github.com/aksalj/labdns",
     "repository": {
@@ -19,9 +19,16 @@
 
     "license": "MIT",
     "scripts": {
-        "start": "node ./bin/start",
-        "labDNS": "node ./bin/start"
+        "start": "node ./bin/start"
     },
+    "bin": {
+        "labDNS": "./bin/start"
+    },
+    "files": [
+        "bin/start",
+        "src",
+        "config"
+    ],
     "dependencies": {
         "config" : "1.4.0",
         "native-dns": "0.7.0",
